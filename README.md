@@ -1,7 +1,8 @@
-Role Name
-=========
+debian-upgrade-reboot
+=====================
 
-A brief description of the role goes here.
+Ansible role for Debian and Ubuntu hosts, to upgrade packages and reboot if necessary
+
 
 Requirements
 ------------
