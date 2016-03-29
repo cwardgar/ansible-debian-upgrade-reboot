@@ -4,6 +4,8 @@
   apt:
     upgrade: dist
     update_cache: yes
+  async: 600
+  poll: 10
 
 - name: Check if reboot is required
   stat:
