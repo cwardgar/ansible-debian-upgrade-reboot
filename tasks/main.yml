@@ -22,5 +22,5 @@
 - name: Wait for host to be ready
   sudo: no
   connection: local
-  local_action: wait_for host="{{ inventory_hostname }}" port=22
+  local_action: wait_for host="{{ ansible_host }}" port="{{ ansible_port }}"
 
