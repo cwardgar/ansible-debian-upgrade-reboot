@@ -1,5 +1,12 @@
-.kitchen/
-.kitchen.local.yml
+# Python
+*.pyc
 
+# Vim
+*.swp
+
+# Ansible
+*.retry
+
+# Molecule
 .molecule/state.yml
 .molecule/ansible_inventory
