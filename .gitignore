@@ -10,3 +10,6 @@
 # Molecule
 .molecule/state.yml
 .molecule/ansible_inventory
+
+# Vagrant
+.vagrant
