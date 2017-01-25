@@ -7,20 +7,35 @@
   async: 600
   poll: 10
 
+
 - name: Check if reboot is required
   stat:
     path: /var/run/reboot-required
   register: stat
+  changed_when: stat.stat.exists
+
+
+#
+# Reboot & wait derived from code written by Martin Eggen.
+# https://github.com/ansible/ansible/issues/14413#issuecomment-257887580
+# 
 
 - name: Reboot host
-  command: shutdown -r now "Ansible updates triggered"
-  # Hang up immediately after issuing reboot command
-  async: 0
+  shell: sleep 2 && shutdown -r now "Ansible reboot"
+  async: 1
   poll: 0
+  ignore_errors: yes
   when: stat.stat.exists
+
 
 - name: Wait for host to be ready
   sudo: no
   connection: local
-  local_action: wait_for host="{{ ansible_host }}" port="{{ ansible_port | default(22) }}"
+  local_action: wait_for 
+  args:
+    host: "{{ ansible_host }}"
+    port: "{{ ansible_port }}"
+    state: started
+    delay: 30
+    timeout: 300
 
