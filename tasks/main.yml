@@ -29,7 +29,7 @@
 
 
 - name: Wait for host to be ready
-  sudo: no
+  become: no
   connection: local
   local_action: wait_for 
   args:
