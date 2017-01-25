@@ -34,7 +34,8 @@
   local_action: wait_for 
   args:
     host: "{{ ansible_host }}"
-    port: "{{ ansible_port }}"
+    port: "{{ ansible_port | default(22) }}"
     state: started
+    delay: 30
     timeout: 300
 

@@ -1,0 +1,26 @@
+# vim:ft=ansible:
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+vagrant:
+  platforms:
+    - name: jessie
+      box: debian/jessie64
+    - name: xenial
+      box: ubuntu/xenial64
+    - name: trusty
+      box: ubuntu/trusty64
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 512
+        cpus: 2
+  instances:
+    - name: ansible-debian-upgrade-reboot
+      ansible_groups:
+        - group1
+verifier:
+  name: testinfra
