@@ -8,7 +8,7 @@ Installation
 ------------
 
 ```bash
-ansible-galaxy install jason.mcvetta.debian-upgrade-reboot
+ansible-galaxy install jmcvetta.debian-upgrade-reboot
 ```
 
 
