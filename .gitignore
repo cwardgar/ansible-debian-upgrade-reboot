@@ -1,2 +1,5 @@
 .kitchen/
 .kitchen.local.yml
+
+.molecule/state.yml
+.molecule/ansible_inventory
