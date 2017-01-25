@@ -36,5 +36,6 @@
     host: "{{ ansible_host }}"
     port: "{{ ansible_port }}"
     state: started
+	delay: 30
     timeout: 300
 
