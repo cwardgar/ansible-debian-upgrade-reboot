@@ -1,6 +1,0 @@
----
-
-- name: Test playbook for role "debian-upgrade-reboot"
-  hosts: localhost
-  roles:
-    - debian-upgrade-reboot
