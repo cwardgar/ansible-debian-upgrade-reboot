@@ -21,10 +21,9 @@
 # 
 
 - name: Reboot host
-  shell: sleep 2 && shutdown -r now "Ansible reboot"
+  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot"
   async: 1
   poll: 0
-  ignore_errors: yes
   when: stat.stat.exists
 
 
@@ -36,6 +35,6 @@
     host: "{{ ansible_host }}"
     port: "{{ ansible_port | default(22) }}"
     state: started
-    delay: 30
-    timeout: 300
+    delay: 60
+    timeout: 180
 
