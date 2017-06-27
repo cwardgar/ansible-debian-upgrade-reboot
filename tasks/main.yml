@@ -13,7 +13,9 @@
 # 
 
 - name: Reboot host
-  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot" removes=/var/run/reboot-required
+  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot" 
+  args: 
+    removes=/var/run/reboot-required
   async: 1
   poll: 0
 
