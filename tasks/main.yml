@@ -7,25 +7,17 @@
   async: 600
   poll: 10
 
-
-- name: Check if reboot is required
-  stat:
-    path: /var/run/reboot-required
-  register: stat
-  changed_when: stat.stat.exists
-
-
 #
 # Reboot & wait derived from code written by Martin Eggen.
 # https://github.com/ansible/ansible/issues/14413#issuecomment-257887580
 # 
 
 - name: Reboot host
-  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot"
+  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot" 
+  args: 
+    removes=/var/run/reboot-required
   async: 1
   poll: 0
-  when: stat.stat.exists
-
 
 - name: Wait for host to be ready
   become: no
