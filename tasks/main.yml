@@ -20,7 +20,10 @@
   poll: 0  # We don't want to wait for the task to complete, so “fire and forget” by specifying a poll value of 0.
 
 - name: Wait for host to be ready
-  wait_for:
+  become: no
+  connection: local
+  local_action: wait_for  # Execute 'wait_for' on the Ansible controller, NOT the target. The target is rebooting.
+  args:
     host: "{{ ansible_host }}"
     port: "{{ ansible_port | default(22) }}"
     state: started
