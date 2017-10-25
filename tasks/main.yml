@@ -4,29 +4,25 @@
   apt:
     upgrade: dist
     update_cache: yes
-  async: 600
-  poll: 10
+  async: 600  # Maximum runtime for task.
+  poll: 10    # How frequently to poll the task's status.
 
 #
 # Reboot & wait derived from code written by Martin Eggen.
 # https://github.com/ansible/ansible/issues/14413#issuecomment-257887580
-# 
+#
 
 - name: Reboot host
-  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot" 
-  args: 
-    removes=/var/run/reboot-required
+  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot"
+  args:
+    removes: /var/run/reboot-required
   async: 1
-  poll: 0
+  poll: 0  # We don't want to wait for the task to complete, so “fire and forget” by specifying a poll value of 0.
 
 - name: Wait for host to be ready
-  become: no
-  connection: local
-  local_action: wait_for 
-  args:
+  wait_for:
     host: "{{ ansible_host }}"
     port: "{{ ansible_port | default(22) }}"
     state: started
     delay: 60
     timeout: 180
-
