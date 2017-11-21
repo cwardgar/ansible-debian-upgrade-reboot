@@ -1,32 +1,28 @@
 ---
-
-- name: Update package cache & dist-upgrade packages
+- name: Update apt cache, perform a full upgrade, and remove cruft.
   apt:
-    upgrade: dist
     update_cache: yes
-  async: 600
-  poll: 10
+    cache_valid_time: 3600  # Update cache if it's been over an hour since the last update.
+    upgrade: dist
+    dpkg_options: 'force-confnew'  # Always install the new versions of configuration files.
+    autoremove: yes
+    autoclean: yes
 
-#
-# Reboot & wait derived from code written by Martin Eggen.
-# https://github.com/ansible/ansible/issues/14413#issuecomment-257887580
-# 
+- name: Check if reboot is required
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required
+  changed_when: reboot_required.stat.exists
 
 - name: Reboot host
-  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot" 
-  args: 
-    removes: /var/run/reboot-required
+  shell: sleep 2 && /sbin/shutdown -r now "Ansible reboot"
   async: 1
-  poll: 0
+  poll: 0  # We don't want to wait for the task to complete, so “fire and forget” by specifying a poll value of 0.
+  when: reboot_required.stat.exists
 
-- name: Wait for host to be ready
-  become: no
-  connection: local
-  local_action: wait_for 
+- name: Wait for server to come back.
+  wait_for_connection:
   args:
-    host: "{{ ansible_host }}"
-    port: "{{ ansible_port | default(22) }}"
-    state: started
-    delay: 60
-    timeout: 180
-
+    delay: 15
+    timeout: 120
+  when: reboot_required.stat.exists
